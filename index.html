@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bun, will you be my duo tonight? 💜</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Nunito',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    padding:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #f5d8ff 0%,
+        #ddd5ff 50%,
+        #c5e9ff 100%
+    );
+}
+
+.card{
+    width:100%;
+    max-width:650px;
+
+    background:rgba(255,255,255,.45);
+
+    backdrop-filter:blur(16px);
+
+    border-radius:40px;
+
+    padding:35px 25px;
+
+    text-align:center;
+
+    box-shadow:
+    0 20px 60px rgba(176,120,255,.25);
+
+    position:relative;
+
+    z-index:10;
+}
+
+.decor{
+    font-size:32px;
+    margin-bottom:18px;
+}
+
+h1{
+    color:#8b4fd8;
+    font-size:clamp(2.4rem,8vw,4.2rem);
+    line-height:1.05;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    color:#6d6a92;
+    font-size:1.15rem;
+    line-height:1.7;
+    max-width:520px;
+    margin:0 auto 35px;
+}
+
+.buttons{
+    position:relative;
+    height:180px;
+}
+
+button{
+    border:none;
+    border-radius:999px;
+    padding:18px 40px;
+    font-size:1.2rem;
+    font-weight:800;
+    cursor:pointer;
+    overflow:hidden;
+    position:absolute;
+}
+
+#yes{
+    background:
+    linear-gradient(
+        90deg,
+        #d886ff,
+        #b57eff
+    );
+
+    color:white;
+
+    box-shadow:
+    0 0 30px rgba(216,134,255,.5);
+
+    left:15%;
+    top:50%;
+
+    transform:translateY(-50%);
+}
+
+#yes:active{
+    transform:
+    translateY(-50%)
+    scale(.95);
+}
+
+#no{
+    background:#bfe5ff;
+    color:#2b2b5c;
+
+    right:15%;
+    top:50%;
+
+    transform:translateY(-50%);
+}
+
+.footer{
+    margin-top:10px;
+    color:#666;
+    font-size:1rem;
+}
+
+.float{
+    position:fixed;
+    pointer-events:none;
+    opacity:.35;
+    z-index:1;
+
+    animation:
+    float linear infinite;
+}
+
+@keyframes float{
+
+    from{
+        transform:
+        translateY(110vh)
+        rotate(0deg);
+    }
+
+    to{
+        transform:
+        translateY(-120vh)
+        rotate(360deg);
+    }
+
+}
+
+.ripple{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,.8);
+    transform:scale(0);
+    animation:ripple .6s linear;
+}
+
+@keyframes ripple{
+
+    to{
+        transform:scale(4);
+        opacity:0;
+    }
+
+}
+
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    pointer-events:none;
+    z-index:9999;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+
+<div class="decor">
+🎮 💜 🎮
+</div>
+
+<h1>
+Bun,<br>
+will you be my<br>
+duo tonight?
+</h1>
+
+<div class="subtitle">
+Say yes, I know you still need 60 levels for that Funny Bunny title.
+<br>
+Or try clicking "No" and see what happens... 😉
+</div>
+
+<div class="buttons">
+
+<button id="yes">
+Yes 💜
+</button>
+
+<button id="no">
+No
+</button>
+
+</div>
+
+<div class="footer">
+made with pixels & love ✨
+</div>
+
+</div>
+
+<script>
+
+const noBtn =
+document.getElementById("no");
+
+const texts = [
+"No",
+"Are you sure?",
+"Really?",
+"Think again 💜",
+"Wrong answer 😤"
+];
+
+let count = 0;
+
+const positions = [
+{left:"65%",top:"50%"},
+{left:"12%",top:"18%"},
+{left:"65%",top:"18%"},
+{left:"12%",top:"75%"},
+{left:"65%",top:"75%"},
+{left:"40%",top:"15%"},
+{left:"40%",top:"80%"}
+];
+
+function moveNo(){
+
+    const pos =
+    positions[
+        Math.floor(
+            Math.random() *
+            positions.length
+        )
+    ];
+
+    noBtn.style.left =
+    pos.left;
+
+    noBtn.style.top =
+    pos.top;
+
+    noBtn.style.right =
+    "auto";
+
+    count++;
+
+    noBtn.innerText =
+    texts[
+        Math.min(
+            count,
+            texts.length - 1
+        )
+    ];
+
+}
+
+noBtn.addEventListener(
+"mouseenter",
+moveNo
+);
+
+noBtn.addEventListener(
+"touchstart",
+(e)=>{
+    e.preventDefault();
+    moveNo();
+}
+);
+
+function ripple(btn,e){
+
+    const circle =
+    document.createElement("span");
+
+    circle.className =
+    "ripple";
+
+    const rect =
+    btn.getBoundingClientRect();
+
+    const size = 60;
+
+    circle.style.width =
+    size+"px";
+
+    circle.style.height =
+    size+"px";
+
+    circle.style.left =
+    (e.clientX-rect.left-size/2)
+    +"px";
+
+    circle.style.top =
+    (e.clientY-rect.top-size/2)
+    +"px";
+
+    btn.appendChild(circle);
+
+    setTimeout(()=>{
+        circle.remove();
+    },600);
+
+}
+
+document
+.querySelectorAll("button")
+.forEach(btn=>{
+
+    btn.addEventListener(
+    "click",
+    e=>ripple(btn,e)
+    );
+
+});
+
+function confetti(){
+
+    for(let i=0;i<180;i++){
+
+        const c =
+        document.createElement("div");
+
+        c.className =
+        "confetti";
+
+        c.style.left =
+        (window.innerWidth/2)
+        +"px";
+
+        c.style.top =
+        (window.innerHeight/2)
+        +"px";
+
+        c.style.background =
+        `hsl(
+        ${Math.random()*360},
+        100%,
+        70%
+        )`;
+
+        document.body
+        .appendChild(c);
+
+        const x =
+        (Math.random()-.5)
+        *1200;
+
+        const y =
+        (Math.random()-.5)
+        *1200;
+
+        c.animate(
+
+        [
+            {
+                transform:
+                "translate(0,0)"
+            },
+
+            {
+                transform:
+                `translate(
+                ${x}px,
+                ${y}px
+                )
+                rotate(
+                ${Math.random()*1080}deg
+                )`
+            }
+        ],
+
+        {
+            duration:
+            2500+
+            Math.random()*1500
+        }
+
+        );
+
+        setTimeout(()=>{
+            c.remove();
+        },4000);
+
+    }
+
+}
+
+document
+.getElementById("yes")
+.addEventListener(
+"click",
+()=>{
+
+    confetti();
+
+    setTimeout(()=>{
+
+        document
+        .getElementById("card")
+        .innerHTML = `
+
+        <div class="decor">
+        🎮 💜 🎮
+        </div>
+
+        <h1>
+        Let's win together 💜
+        </h1>
+
+        <div class="subtitle">
+
+        I knew you'd say yes 😊
+
+        <br><br>
+
+        Let's queue up later tonight.
+
+        </div>
+
+        <button
+        id="party"
+        style="
+        position:static;
+        background:linear-gradient(
+        90deg,
+        #d886ff,
+        #b57eff
+        );
+        color:white;
+        ">
+
+        More Confetti 🎉
+
+        </button>
+
+        <div class="footer">
+        made with pixels & love ✨
+        </div>
+
+        `;
+
+        document
+        .getElementById("party")
+        .addEventListener(
+        "click",
+        confetti
+        );
+
+    },700);
+
+}
+);
+
+const icons = [
+"💜",
+"✨",
+"♡",
+"🎮"
+];
+
+for(let i=0;i<35;i++){
+
+    const item =
+    document.createElement("div");
+
+    item.className =
+    "float";
+
+    item.innerHTML =
+    icons[
+        Math.floor(
+            Math.random()*
+            icons.length
+        )
+    ];
+
+    item.style.left =
+    Math.random()*100
+    +"vw";
+
+    item.style.fontSize =
+    (18+Math.random()*20)
+    +"px";
+
+    item.style.animationDuration =
+    (8+Math.random()*12)
+    +"s";
+
+    document.body
+    .appendChild(item);
+
+}
+
+</script>
+
+</body>
+</html>
